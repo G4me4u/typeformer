@@ -27,6 +27,8 @@ class Main:
 	def initPygame(self):
 		pygame.init()
 
+		pygame.display.set_caption(TITLE)
+
 		size = width, height = 1200, 800
 		self.screen = pygame.display.set_mode(size)
 
