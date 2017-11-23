@@ -4,6 +4,7 @@ from constants import *
 from timer import Timer
 
 from quotemanager import QuoteManager
+from quoterenderer import QuoteRenderer
 
 class Main:
 
@@ -12,6 +13,7 @@ class Main:
 		self.screen = None
 
 		self.quoteManager = None
+		self.quoteRenderer = None
 
 		self.running = False
 
@@ -25,9 +27,13 @@ class Main:
 
 	def init(self):
 		self.timer = Timer()
+
 		self.quoteManager = QuoteManager(QUOTES_FILE_PATH)
+		self.quoteManager.randomize()
 
 		self.initPygame()
+		
+		self.quoteRenderer = QuoteRenderer(self.quoteManager)
 	
 	def initPygame(self):
 		pygame.init()
@@ -70,6 +76,7 @@ class Main:
 		pygame.display.flip()
 	
 	def render(self, dt):
-		pygame.draw.rect(self.screen, (255, 255, 255), pygame.Rect(self.px + (self.x - self.px) * dt, 10, 100, 100))
+		#pygame.draw.rect(self.screen, (255, 255, 255), pygame.Rect(self.px + (self.x - self.px) * dt, 10, 100, 100))
+		self.quoteRenderer.render(self.screen)
 
 Main().start()

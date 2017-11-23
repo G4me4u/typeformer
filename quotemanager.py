@@ -1,11 +1,14 @@
 from quote import Quote
-from random import randint
+from random import shuffle
 
 class QuoteManager:
 
 	def __init__(self, filePath):
 		self.filePath = filePath
 		self.quotes = []
+
+		self.currentQuoteIndex = 0
+		self.currentQuoteOffset = 0
 		
 		self.load()
 
@@ -16,7 +19,12 @@ class QuoteManager:
 				continue
 			self.quotes.append(Quote(quote[0], quote[1]))
 	
-	def getRandomQuote(self):
-		return self.quotes[randint(0, len(self.quotes) - 1)]
+	def randomize(self):
+		shuffle(self.quotes)
 
+	def getCurrentQuote(self):
+		return self.getNearbyQuote(0)
+
+	def getNearbyQuote(self, currentIndexOffset):
+		return self.quotes[self.currentQuoteIndex + currentIndexOffset]
 
