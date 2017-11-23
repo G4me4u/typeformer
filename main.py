@@ -3,11 +3,15 @@ import pygame
 from constants import *
 from timer import Timer
 
+from quotemanager import QuoteManager
+
 class Main:
 
 	def __init__(self):
 		self.timer = None
 		self.screen = None
+
+		self.quoteManager = None
 
 		self.running = False
 
@@ -21,6 +25,7 @@ class Main:
 
 	def init(self):
 		self.timer = Timer()
+		self.quoteManager = QuoteManager(QUOTES_FILE_PATH)
 
 		self.initPygame()
 	
