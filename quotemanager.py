@@ -15,8 +15,6 @@ class QuoteManager:
 			if (len(quote) != 2):
 				continue
 			self.quotes.append(Quote(quote[0], quote[1]))
-		
-		print(str(self.getRandomQuote()))
 	
 	def getRandomQuote(self):
 		return self.quotes[randint(0, len(self.quotes) - 1)]
