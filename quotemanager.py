@@ -97,11 +97,6 @@ class QuoteManager:
 				self.moveLines()
 				self.colOffset = 0
 
-			print('you pressed the right char')
-			pass #addAcceleration()
-		else:
-			pass #check for jump, or decelerate
-
 	def moveLines(self):
 		oldRowOffset = self.rowOffset
 		self.rowOffset += 1
@@ -120,17 +115,12 @@ class QuoteManager:
 
 	def tick(self):
 		pass
-		'''
-		self.animTimer += 1
-		if (self.animTimer >= 10):
-			self.animTimer = 0
-			self.moveLines()
-		'''
+	
 	def render(self, screen, dt):
 		w = screen.get_width()
 		h = screen.get_height()
 
-		y = 100
+		y = 20
 		alpha = 1.0
 		for i in range(min(MAX_WRITING_ROWS, self.numLines - self.rowOffset)):
 			line = self.lines[i + self.rowOffset].renderedLine
