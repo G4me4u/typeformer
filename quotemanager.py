@@ -20,13 +20,15 @@ class QuoteManager:
 		self.renderedLines = []
 
 		self.rowOffset = 0
+		self.colOffset = 0
 		self.animTimer = 0
+
+		self.currentText = None
 
 		self.numLines = 0
 		self.originText = None
 		
 		self.load()
-		self.generateLines()
 
 	def load(self):
 		for line in open(self.filePath, "r"):
@@ -79,10 +81,26 @@ class QuoteManager:
 		self.updateOriginText()
 
 		self.rowOffset = 0
+		self.colOffset = 0
+		self.currentText = None
 
 	def updateOriginText(self):
 		topLine = self.lines[self.rowOffset]
 		self.originText = self.originFont.render(topLine.origin, True, WHITE)
+
+	def keyTyped(self, key):
+		topLine = self.lines[self.rowOffset]
+		if key == topLine.lineText[self.colOffset]:
+			self.colOffset += 1
+			self.currentText = self.originFont.render(topLine.lineText[:self.colOffset], True, WHITE)
+			if (self.colOffset >= len(topLine.lineText)):
+				self.moveLines()
+				self.colOffset = 0
+
+			print('you pressed the right char')
+			pass #addAcceleration()
+		else:
+			pass #check for jump, or decelerate
 
 	def moveLines(self):
 		oldRowOffset = self.rowOffset
@@ -101,11 +119,13 @@ class QuoteManager:
 			self.lines[self.rowOffset + MAX_WRITING_ROWS - 1].renderLine(self.textFont, WHITE)
 
 	def tick(self):
+		pass
+		'''
 		self.animTimer += 1
 		if (self.animTimer >= 10):
 			self.animTimer = 0
 			self.moveLines()
-
+		'''
 	def render(self, screen, dt):
 		w = screen.get_width()
 		h = screen.get_height()
@@ -130,3 +150,6 @@ class QuoteManager:
 
 		if (self.rowOffset >= 0 and self.rowOffset < self.numLines):
 			screen.blit(self.originText, (w - self.originText.get_width() - 5, h - self.originText.get_height() - 5))
+
+		if (self.currentText):
+			screen.blit(self.currentText, (5, h - self.currentText.get_height()))

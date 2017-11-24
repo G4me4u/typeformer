@@ -30,6 +30,7 @@ class Main:
 		
 		self.quoteManager = QuoteManager(QUOTES_FILE_PATH)
 		self.quoteManager.randomize()
+		self.quoteManager.generateLines()
 	
 	def initPygame(self):
 		pygame.init()
@@ -43,13 +44,7 @@ class Main:
 		if (ev.type == pygame.QUIT):
 			self.running = False
 		if (ev.type == pygame.KEYDOWN):
-			self.keyTyped(ev.unicode)
-
-	def keyTyped(self, key):
-		if key == 'A': #getNextChar():
-			pass #addAcceleration()
-		else:
-			pass #check for jump, or decelerate
+			self.quoteManager.keyTyped(ev.unicode)
 
 	def runLoop(self):
 		self.running = True
