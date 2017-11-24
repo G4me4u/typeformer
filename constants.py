@@ -3,9 +3,10 @@ TITLE = "TypeFormer v0.1"
 TPS = 20.0
 FPS = 60.0 # has to be a multiple of TPS
 
-black = (0, 0, 0)
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
 
 QUOTES_FILE_PATH = "res/text.txt"
 
-MAX_WRITING_COLS = 100
-MAX_WRITING_ROWS = 10
+MAX_WRITING_COLS = 60
+MAX_WRITING_ROWS = 4

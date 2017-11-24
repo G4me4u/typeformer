@@ -40,8 +40,14 @@ class Main:
 
 		pygame.display.set_caption(TITLE)
 
-		size = width, height = 1200, 800
+		size = width, height = 720, 540
 		self.screen = pygame.display.set_mode(size)
+
+	def handleEvent(self):
+		if (ev.type == pygame.QUIT):
+			self.running = False
+		
+		# Handle text events here (maybe call another func).
 
 	def runLoop(self):
 		self.running = True
@@ -50,8 +56,7 @@ class Main:
 
 		while (self.running):
 			for ev in pygame.event.get():
-				if (ev.type == pygame.QUIT):
-					self.running = False
+				handleEvent(ev)
 
 			self.timer.tick()
 
@@ -70,13 +75,15 @@ class Main:
 		self.px = self.x
 		self.x += 10
 
+		self.quoteRenderer.tick()
+
 	def draw(self, dt):
-		self.screen.fill(black)
+		self.screen.fill(BLACK)
 		self.render(dt)
 		pygame.display.flip()
 	
 	def render(self, dt):
 		#pygame.draw.rect(self.screen, (255, 255, 255), pygame.Rect(self.px + (self.x - self.px) * dt, 10, 100, 100))
-		self.quoteRenderer.render(self.screen)
+		self.quoteRenderer.render(self.screen, dt)
 
 Main().start()
