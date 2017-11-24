@@ -56,7 +56,7 @@ class Main:
 
 		while (self.running):
 			for ev in pygame.event.get():
-				handleEvent(ev)
+				self.handleEvent(ev)
 
 			self.timer.tick()
 
