@@ -1,5 +1,6 @@
 import pygame
 
+from time import time
 from random import shuffle
 
 from constants import *
@@ -27,6 +28,9 @@ class QuoteManager:
 
 		self.numLines = 0
 		self.originText = None
+
+		self.typedTimes = []
+		self.symbolsPerSecond = 0
 		
 		self.load()
 
@@ -84,6 +88,9 @@ class QuoteManager:
 		self.colOffset = 0
 		self.currentText = None
 
+		self.typedTimes = []
+		self.symbolsPerSecond = 0
+
 	def updateOriginText(self):
 		topLine = self.lines[self.rowOffset]
 		self.originText = self.originFont.render(topLine.origin, True, WHITE)
@@ -93,6 +100,8 @@ class QuoteManager:
 		if key == topLine.lineText[self.colOffset]:
 			self.colOffset += 1
 			self.currentText = self.originFont.render(topLine.lineText[:self.colOffset], True, WHITE)
+			self.typedTimes.append(time())
+			
 			if (self.colOffset >= len(topLine.lineText)):
 				self.moveLines()
 				self.colOffset = 0
@@ -114,8 +123,23 @@ class QuoteManager:
 			self.lines[self.rowOffset + MAX_WRITING_ROWS - 1].renderLine(self.textFont, WHITE)
 
 	def tick(self):
-		pass
-	
+		now = time()
+		while (len(self.typedTimes) > 0 and now - self.typedTimes[0] > AVG_SPEED_SAMPLE_TIME):
+			self.typedTimes.pop(0)
+		
+		self.symbolsPerSecond = len(self.typedTimes) / AVG_SPEED_SAMPLE_TIME
+
+	def renderLine(self, screen, line, x, y, alpha=1.0):
+		# Make temp surface for alpha channel
+		surface = pygame.Surface((line.get_width(), line.get_height()))
+		surface.blit(line,(0, 0))
+		
+		# Set alpha
+		surface.set_alpha(int(alpha * 255))
+		
+		# Draw temp surface to screen
+		screen.blit(surface, (x, y))
+
 	def render(self, screen, dt):
 		w = screen.get_width()
 		h = screen.get_height()
@@ -123,23 +147,24 @@ class QuoteManager:
 		y = 20
 		alpha = 1.0
 		for i in range(min(MAX_WRITING_ROWS, self.numLines - self.rowOffset)):
-			line = self.lines[i + self.rowOffset].renderedLine
-			
-			# Make temp surface for alpha channel
-			surface = pygame.Surface((line.get_width(), line.get_height()))
-			surface.blit(line,(0, 0))
-			
-			# Set alpha
-			surface.set_alpha(int(alpha * 255))
-			alpha -= 1.0 / MAX_WRITING_ROWS
-			
-			# Draw temp surface to screen
-			screen.blit(surface, ((w - line.get_width()) // 2, y))
+			line = self.lines[i + self.rowOffset]
+			if (i == 0 and self.colOffset > 0):
+				l1 = self.textFont.render(line.lineText[:self.colOffset].replace(" ", "_"), True, RED)
+				l2 = self.textFont.render(line.lineText[self.colOffset:], True, WHITE)
 
-			y += line.get_height()
+				x0 = (w - l1.get_width() - l2.get_width()) // 2
+				x1 = x0 + l1.get_width()
+
+				self.renderLine(screen, l1, x0, y)
+				self.renderLine(screen, l2, x1, y)
+			else:
+				self.renderLine(screen, line.renderedLine, (w - line.renderedLine.get_width()) // 2, y, alpha)
+			
+			alpha -= 1.0 / MAX_WRITING_ROWS
+			y += line.renderedLine.get_height()
 
 		if (self.rowOffset >= 0 and self.rowOffset < self.numLines):
 			screen.blit(self.originText, (w - self.originText.get_width() - 5, h - self.originText.get_height() - 5))
 
 		if (self.currentText):
-			screen.blit(self.currentText, (5, h - self.currentText.get_height()))
+			screen.blit(self.currentText, (5, h - self.currentText.get_height() - 5))
