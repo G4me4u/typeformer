@@ -43,7 +43,7 @@ class Main:
 		size = width, height = 720, 540
 		self.screen = pygame.display.set_mode(size)
 
-	def handleEvent(self):
+	def handleEvent(self, ev):
 		if (ev.type == pygame.QUIT):
 			self.running = False
 		
