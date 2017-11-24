@@ -96,9 +96,21 @@ class QuoteRenderer:
 		h = screen.get_height()
 
 		y = 100
+		alpha = 1.0
 		for i in range(min(MAX_WRITING_ROWS, self.numLines - self.rowOffset)):
 			line = self.lines[i + self.rowOffset].renderedLine
-			screen.blit(line, ((w - line.get_width()) // 2, y))
+			
+			# Make temp surface for alpha channel
+			surface = pygame.Surface((line.get_width(), line.get_height()))
+			surface.blit(line,(0, 0))
+			
+			# Set alpha
+			surface.set_alpha(int(alpha * 255))
+			alpha -= 1.0 / MAX_WRITING_ROWS
+			
+			# Draw temp surface to screen
+			screen.blit(surface, ((w - line.get_width()) // 2, y))
+
 			y += line.get_height()
 
 		if (self.rowOffset >= 0 and self.rowOffset < self.numLines):
