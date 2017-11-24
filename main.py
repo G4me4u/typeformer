@@ -46,8 +46,14 @@ class Main:
 	def handleEvent(self, ev):
 		if (ev.type == pygame.QUIT):
 			self.running = False
-		
-		# Handle text events here (maybe call another func).
+		if (ev.type == pygame.KEYDOWN):
+			self.keyTyped(ev.unicode)
+
+	def keyTyped(self, key):
+		if key == 'A' #getNextChar():
+			pass #addAcceleration()
+		else:
+			pass #check for jump, or decelerate
 
 	def runLoop(self):
 		self.running = True
