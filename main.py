@@ -4,7 +4,6 @@ from constants import *
 from timer import Timer
 
 from quotemanager import QuoteManager
-from quoterenderer import QuoteRenderer
 
 class Main:
 
@@ -13,7 +12,6 @@ class Main:
 		self.screen = None
 
 		self.quoteManager = None
-		self.quoteRenderer = None
 
 		self.running = False
 
@@ -28,12 +26,10 @@ class Main:
 	def init(self):
 		self.timer = Timer()
 
-		self.quoteManager = QuoteManager(QUOTES_FILE_PATH)
-		self.quoteManager.randomize()
-
 		self.initPygame()
 		
-		self.quoteRenderer = QuoteRenderer(self.quoteManager)
+		self.quoteManager = QuoteManager(QUOTES_FILE_PATH)
+		self.quoteManager.randomize()
 	
 	def initPygame(self):
 		pygame.init()
@@ -50,7 +46,7 @@ class Main:
 			self.keyTyped(ev.unicode)
 
 	def keyTyped(self, key):
-		if key == 'A' #getNextChar():
+		if key == 'A': #getNextChar():
 			pass #addAcceleration()
 		else:
 			pass #check for jump, or decelerate
@@ -81,7 +77,7 @@ class Main:
 		self.px = self.x
 		self.x += 10
 
-		self.quoteRenderer.tick()
+		self.quoteManager.tick()
 
 	def draw(self, dt):
 		self.screen.fill(BLACK)
@@ -89,7 +85,6 @@ class Main:
 		pygame.display.flip()
 	
 	def render(self, dt):
-		#pygame.draw.rect(self.screen, (255, 255, 255), pygame.Rect(self.px + (self.x - self.px) * dt, 10, 100, 100))
-		self.quoteRenderer.render(self.screen, dt)
+		self.quoteManager.render(self.screen, dt)
 
 Main().start()
