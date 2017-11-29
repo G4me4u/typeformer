@@ -89,6 +89,8 @@ class QuoteManager:
 		self.rowOffset = 0
 		self.colOffset = 0
 		self.currentText = None
+		self.lineTypedText = None
+		self.lineMissingText = None
 
 		self.typedTimes = []
 		self.symbolsPerSecond = 0
