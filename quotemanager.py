@@ -10,10 +10,19 @@ from quoteline import QuoteLine
 
 class QuoteManager:
 
+'''
+Initializes QuoteManager. The first argument (filePath) is the
+location of the quote text file. The format used for storing
+these quotes have to be the following:
+	[quote-text]@[origin]
+Where quote-text is the actual quote (no new-lines or @ characters)
+and origin is where the text originated from (can be empty).
+'''
 	def __init__(self, filePath):
 		self.filePath = filePath
 		self.quotes = []
 
+		# Fonts used for drawing
 		self.textFont = pygame.font.SysFont("Courier New", 18)
 		self.originFont = pygame.font.SysFont("Courier New", 14)
 		
@@ -22,7 +31,6 @@ class QuoteManager:
 
 		self.rowOffset = 0
 		self.colOffset = 0
-		self.animTimer = 0
 
 		self.currentText = None
 		self.lineTypedText = None
@@ -36,16 +44,30 @@ class QuoteManager:
 		
 		self.load()
 
+'''
+Loads quotes from the given filepath. (see QuoteManager.__init__())
+'''
 	def load(self):
 		for line in open(self.filePath, "r"):
 			quote = line.replace("\n", "").split("@")
 			if (len(quote) != 2):
 				continue
 			self.quotes.append(Quote(quote[0], quote[1]))
-	
+
+'''
+Randomizes the loaded quotes.
+NOTE: if this function is called and lines are already generated,
+they will not be recreated nor discarted. Call generateLines() if
+desired.
+'''
 	def randomize(self):
 		shuffle(self.quotes)
 
+'''
+Generates lines used for drawing and typing. More specifically,
+this funtion will split all the quotes into smaller lines, so
+they fit the specification of MAX_WRITING_COLS in constants.py
+'''
 	def generateLines(self):
 		self.lines = []
 		
@@ -95,10 +117,18 @@ class QuoteManager:
 		self.typedTimes = []
 		self.symbolsPerSecond = 0
 
+'''
+Updates the rendered text used to draw the origin of the current
+topLine.
+'''
 	def updateOriginText(self):
 		topLine = self.lines[self.rowOffset]
 		self.originText = self.originFont.render(topLine.origin, True, WHITE)
 
+'''
+Should be invoked whenever a key has been pressed. The first
+argument is the unicode char of the KEY_PRESSED event.
+'''
 	def keyTyped(self, key):
 		topLine = self.lines[self.rowOffset]
 		if (self.colOffset >= len(topLine.lineText)):
@@ -117,6 +147,11 @@ class QuoteManager:
 
 			self.typedTimes.append(time())
 
+'''
+Increments the rowOffset used for drawing lines onto the screen.
+NOTE: this will not reset colOffset, but it does reinitialize the
+originText (see QuoteManager.updateOriginText()).
+'''
 	def moveLines(self):
 		oldRowOffset = self.rowOffset
 		self.rowOffset += 1
@@ -133,6 +168,10 @@ class QuoteManager:
 		if (self.rowOffset + MAX_WRITING_ROWS <= self.numLines):
 			self.lines[self.rowOffset + MAX_WRITING_ROWS - 1].renderLine(self.textFont, WHITE)
 
+'''
+Ticks this quotemanager. Used for timing the amount of characters typed
+per second.
+'''
 	def tick(self):
 		now = time()
 		while (len(self.typedTimes) > 0 and now - self.typedTimes[0] > AVG_SPEED_SAMPLE_TIME):
@@ -140,6 +179,9 @@ class QuoteManager:
 		
 		self.symbolsPerSecond = len(self.typedTimes) / AVG_SPEED_SAMPLE_TIME
 
+'''
+Draws a text-line on the specified location with the specified alpha
+'''
 	def renderLine(self, screen, line, x, y, alpha=1.0):
 		# Make temp surface for alpha channel
 		surface = pygame.Surface((line.get_width(), line.get_height()))
@@ -151,6 +193,9 @@ class QuoteManager:
 		# Draw temp surface to screen
 		screen.blit(surface, (x, y))
 
+'''
+Draws the currently active text-lines, originText and currently typed text.
+'''
 	def render(self, screen, dt):
 		w = screen.get_width()
 		h = screen.get_height()
