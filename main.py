@@ -15,9 +15,6 @@ class Main:
 
 		self.running = False
 
-		self.x = 0
-		self.px = self.x
-
 	def start(self):
 		'''
 		Entry-point for program. Here we initialize,
@@ -99,9 +96,6 @@ class Main:
 		Handles ticking of things that need to change.
 		Called at a set time interval (see constants.py)
 		'''
-
-		self.px = self.x
-		self.x += 10
 
 		self.quoteManager.tick()
 
