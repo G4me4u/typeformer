@@ -43,7 +43,7 @@ class Main:
 	def handleEvent(self, ev):
 		if (ev.type == pygame.QUIT):
 			self.running = False
-		if (ev.type == pygame.KEYDOWN):
+		elif (ev.type == pygame.KEYDOWN):
 			self.quoteManager.keyTyped(ev.unicode)
 
 	def runLoop(self):

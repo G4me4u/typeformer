@@ -101,7 +101,13 @@ class QuoteManager:
 
 	def keyTyped(self, key):
 		topLine = self.lines[self.rowOffset]
-		if key == topLine.lineText[self.colOffset]:
+		if (self.colOffset >= len(topLine.lineText)):
+			if (key == " "):
+				self.moveLines()
+				self.colOffset = 0
+			return
+		
+		if (key == topLine.lineText[self.colOffset]):
 			self.colOffset += 1
 			currentlyTyped = topLine.lineText[:self.colOffset]
 			
@@ -110,10 +116,6 @@ class QuoteManager:
 			self.lineMissingText = self.textFont.render(topLine.lineText[self.colOffset:], True, WHITE)
 
 			self.typedTimes.append(time())
-			
-			if (self.colOffset >= len(topLine.lineText)):
-				self.moveLines()
-				self.colOffset = 0
 
 	def moveLines(self):
 		oldRowOffset = self.rowOffset
