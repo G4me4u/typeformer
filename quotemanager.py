@@ -19,7 +19,7 @@ class QuoteManager:
 		Where quote-text is the actual quote (no new-lines or @ characters)
 		and origin is where the text originated from (can be empty).
 		'''
-		
+
 		self.filePath = filePath
 		self.quotes = []
 
@@ -50,7 +50,7 @@ class QuoteManager:
 		Loads quotes from the given filepath. (see QuoteManager.__init__())
 		'''
 
-		for line in open(self.filePath, "r"):
+		for line in open(self.filePath, "r", encoding="utf-8"):
 			quote = line.replace("\n", "").split("@")
 			if (len(quote) != 2):
 				continue
