@@ -15,12 +15,13 @@ class Timer:
 	
 # Runtime functions
 
-'''
-Initializes the timer. Has to be invoked before running
-main loop. This function will set up time constants
-aswell as the tpsGoal provided as an argument.
-'''
 	def initTimer(self, tpsGoal):
+		'''
+		Initializes the timer. Has to be invoked before running
+		main loop. This function will set up time constants
+		aswell as the tpsGoal provided as an argument.
+		'''
+
 		self.tpsGoal = tpsGoal
 
 		self.last = time()
@@ -28,13 +29,14 @@ aswell as the tpsGoal provided as an argument.
 		self.ds = 0.0
 		self.missingTicks = 0
 
-'''
-Ticks this timer. Has to be invoked everytime one
-wants to know if there are any missingTicks to be
-handled. This function will calculate the delta time
-and use it for calculating the missingTicks variable.
-'''
 	def tick(self):
+		'''
+		Ticks this timer. Has to be invoked everytime one
+		wants to know if there are any missingTicks to be
+		handled. This function will calculate the delta time
+		and use it for calculating the missingTicks variable.
+		'''
+
 		now = time()
 		deltaS = now - self.last
 		self.last = now
@@ -53,14 +55,16 @@ and use it for calculating the missingTicks variable.
 
 # Debug specific functions
 
-'''
-Should be invoked whenever a tick has passed (used for debugging)
-'''
 	def tickPassed(self):
+		'''
+		Should be invoked whenever a tick has passed (used for debugging)
+		'''
+
 		self.tps += 1
 
-'''
-Should be invoked whenever a frame has passed (used for debugging)
-'''
 	def framePassed(self):
+		'''
+		Should be invoked whenever a frame has passed (used for debugging)
+		'''
+		
 		self.fps += 1

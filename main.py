@@ -18,19 +18,21 @@ class Main:
 		self.x = 0
 		self.px = self.x
 
-'''
-Entry-point for program. Here we initialize,
-run and stop the execution.
-'''
 	def start(self):
+		'''
+		Entry-point for program. Here we initialize,
+		run and stop the execution.
+		'''
+		
 		self.init()
 		self.runLoop()
 		self.stop()
 
-'''
-Initializes Main
-'''
 	def init(self):
+		'''
+		Initializes Main
+		'''
+		
 		self.timer = Timer()
 
 		self.initPygame()
@@ -39,10 +41,11 @@ Initializes Main
 		self.quoteManager.randomize()
 		self.quoteManager.generateLines()
 	
-'''
-Initializes pygame and opens a display for drawing.
-'''
 	def initPygame(self):
+		'''
+		Initializes pygame and opens a display for drawing.
+		'''
+		
 		pygame.init()
 
 		pygame.display.set_caption(TITLE)
@@ -50,20 +53,22 @@ Initializes pygame and opens a display for drawing.
 		size = width, height = 720, 540
 		self.screen = pygame.display.set_mode(size)
 
-'''
-Handles events sent by pygame (given in arg 1)
-'''
 	def handleEvent(self, ev):
+		'''
+		Handles events sent by pygame (given in arg 1)
+		'''
+
 		if (ev.type == pygame.QUIT):
 			self.running = False
 		elif (ev.type == pygame.KEYDOWN):
 			self.quoteManager.keyTyped(ev.unicode)
 
-'''
-Runs the main loop, ticks and draws depending on the
-settings of the pre-initialized timer object.
-'''
 	def runLoop(self):
+		'''
+		Runs the main loop, ticks and draws depending on the
+		settings of the pre-initialized timer object.
+		'''
+
 		self.running = True
 
 		self.timer.initTimer(TPS)
@@ -81,28 +86,31 @@ settings of the pre-initialized timer object.
 			self.draw(self.timer.dt)
 			self.timer.framePassed()
 
-'''
-Deinitializes pygame and teminates runtime.
-'''
 	def stop(self):
+		'''
+		Deinitializes pygame and teminates runtime.
+		'''
+
 		pygame.quit()
 		exit(0)
 
-'''
-Handles ticking of things that need to change.
-Called a set amount of time every second (see constants.py)
-'''
 	def tick(self):
+		'''
+		Handles ticking of things that need to change.
+		Called a set amount of time every second (see constants.py)
+		'''
+
 		self.px = self.x
 		self.x += 10
 
 		self.quoteManager.tick()
 
-'''
-Handles drawing things to the screen.
-Called with no specific time interval.
-'''
 	def draw(self, dt):
+		'''
+		Handles drawing things to the screen.
+		Called with no specific time interval.
+		'''
+		
 		self.screen.fill(BLACK)
 		self.render(dt)
 		pygame.display.flip()
