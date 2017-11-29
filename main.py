@@ -97,7 +97,7 @@ class Main:
 	def tick(self):
 		'''
 		Handles ticking of things that need to change.
-		Called a set amount of time every second (see constants.py)
+		Called at a set time interval (see constants.py)
 		'''
 
 		self.px = self.x
@@ -110,7 +110,7 @@ class Main:
 		Handles drawing things to the screen.
 		Called with no specific time interval.
 		'''
-		
+
 		self.screen.fill(BLACK)
 		self.render(dt)
 		pygame.display.flip()
