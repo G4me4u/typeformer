@@ -25,6 +25,8 @@ class QuoteManager:
 		self.animTimer = 0
 
 		self.currentText = None
+		self.lineTypedText = None
+		self.lineMissingText = None
 
 		self.numLines = 0
 		self.originText = None
@@ -99,7 +101,12 @@ class QuoteManager:
 		topLine = self.lines[self.rowOffset]
 		if key == topLine.lineText[self.colOffset]:
 			self.colOffset += 1
-			self.currentText = self.originFont.render(topLine.lineText[:self.colOffset], True, WHITE)
+			currentlyTyped = topLine.lineText[:self.colOffset]
+			
+			self.currentText = self.originFont.render(currentlyTyped, True, WHITE)
+			self.lineTypedText = self.textFont.render(currentlyTyped.replace(" ", "_"), True, RED)
+			self.lineMissingText = self.textFont.render(topLine.lineText[self.colOffset:], True, WHITE)
+
 			self.typedTimes.append(time())
 			
 			if (self.colOffset >= len(topLine.lineText)):
@@ -149,14 +156,11 @@ class QuoteManager:
 		for i in range(min(MAX_WRITING_ROWS, self.numLines - self.rowOffset)):
 			line = self.lines[i + self.rowOffset]
 			if (i == 0 and self.colOffset > 0):
-				l1 = self.textFont.render(line.lineText[:self.colOffset].replace(" ", "_"), True, RED)
-				l2 = self.textFont.render(line.lineText[self.colOffset:], True, WHITE)
+				x0 = (w - self.lineTypedText.get_width() - self.lineMissingText.get_width()) // 2
+				x1 = x0 + self.lineTypedText.get_width()
 
-				x0 = (w - l1.get_width() - l2.get_width()) // 2
-				x1 = x0 + l1.get_width()
-
-				self.renderLine(screen, l1, x0, y)
-				self.renderLine(screen, l2, x1, y)
+				self.renderLine(screen, self.lineTypedText, x0, y)
+				self.renderLine(screen, self.lineMissingText, x1, y)
 			else:
 				self.renderLine(screen, line.renderedLine, (w - line.renderedLine.get_width()) // 2, y, alpha)
 			
