@@ -13,7 +13,7 @@ class QuoteLine:
 		Renders the line using the given font and color.
 		'''
 
-		self.renderedLine = font.render(self.lineText, True, color)
+		self.renderedLine = font.render(self.lineText, False, color)
 
 	def discardRenderedLine(self):
 		'''

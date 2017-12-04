@@ -24,8 +24,11 @@ class QuoteManager:
 		self.quotes = []
 
 		# Fonts used for drawing
-		self.textFont = pygame.font.SysFont("Courier New", 18)
-		self.originFont = pygame.font.SysFont("Courier New", 14)
+		self.textFont = pygame.font.SysFont("Courier", 18)
+		self.originFont = pygame.font.SysFont("Courier", 14)
+
+		tmpChar = self.textFont.render(" ", False, BLACK)
+		self.charSize = ( tmpChar.get_width(), tmpChar.get_height() )
 		
 		self.lines = []
 		self.renderedLines = []
@@ -127,8 +130,11 @@ class QuoteManager:
 		topLine.
 		'''
 
-		topLine = self.lines[self.rowOffset]
-		self.originText = self.originFont.render(topLine.origin, True, WHITE)
+		origin = self.lines[self.rowOffset].origin
+		if (len(origin) > MAX_ORIGIN_LENGTH):
+			origin = (origin[:MAX_ORIGIN_LENGTH - 3]) + "..."
+
+		self.originText = self.originFont.render(origin, False, BLACK)
 
 	def keyTyped(self, key):
 		'''
@@ -139,6 +145,8 @@ class QuoteManager:
 		topLine = self.lines[self.rowOffset]
 		if (self.colOffset >= len(topLine.lineText)):
 			if (key == " "):
+				self.typedTimes.append(time())
+				
 				self.moveLines()
 				self.colOffset = 0
 			return
@@ -147,9 +155,9 @@ class QuoteManager:
 			self.colOffset += 1
 			currentlyTyped = topLine.lineText[:self.colOffset]
 			
-			self.currentText = self.originFont.render(currentlyTyped, True, WHITE)
-			self.lineTypedText = self.textFont.render(currentlyTyped.replace(" ", "_"), True, RED)
-			self.lineMissingText = self.textFont.render(topLine.lineText[self.colOffset:], True, WHITE)
+			self.currentText = self.originFont.render(currentlyTyped, False, BLACK)
+			self.lineTypedText = self.textFont.render(currentlyTyped.replace(" ", "_"), False, RED)
+			self.lineMissingText = self.textFont.render(topLine.lineText[self.colOffset:], False, WHITE)
 
 			self.typedTimes.append(time())
 
@@ -191,16 +199,10 @@ class QuoteManager:
 		'''
 		Draws a text-line on the specified location with the specified alpha
 		'''
-
-		# Make temp surface for alpha channel
-		surface = pygame.Surface((line.get_width(), line.get_height()))
-		surface.blit(line,(0, 0))
 		
 		# Set alpha
-		surface.set_alpha(int(alpha * 255))
-		
-		# Draw temp surface to screen
-		screen.blit(surface, (x, y))
+		line.set_alpha(int(alpha * 255))
+		screen.blit(line, (x, y))
 
 	def render(self, screen, dt):
 		'''
@@ -209,8 +211,20 @@ class QuoteManager:
 
 		w = screen.get_width()
 		h = screen.get_height()
-
+		
+		aw = int(self.charSize[0] * MAX_WRITING_COLS)
+		ax = (w - aw) // 2
 		y = 20
+		ah = self.charSize[1] * MAX_WRITING_ROWS
+
+		tmpSurface = pygame.Surface((aw + 10, ah + 10))
+		tmpSurface.set_alpha(128)
+		tmpSurface.fill(BLACK)
+		screen.blit(tmpSurface, (ax - 5, y - 5))
+
+		symbolsPerSecondText = self.originFont.render(str(self.symbolsPerSecond) + " symbols / s", False, BLACK)
+		screen.blit(symbolsPerSecondText, ((w - symbolsPerSecondText.get_width()) // 2, y + ah + 5))
+
 		alpha = 1.0
 		for i in range(min(MAX_WRITING_ROWS, self.numLines - self.rowOffset)):
 			line = self.lines[i + self.rowOffset]
