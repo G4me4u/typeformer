@@ -1,9 +1,10 @@
 import pygame
 
 from constants import *
-from timer import Timer
 
+from timer import Timer
 from quotemanager import QuoteManager
+from player import Player
 
 class Main:
 
@@ -12,6 +13,7 @@ class Main:
 		self.screen = None
 
 		self.quoteManager = None
+		self.player = None
 
 		self.running = False
 
@@ -29,7 +31,7 @@ class Main:
 		'''
 		Initializes Main
 		'''
-		
+
 		self.timer = Timer()
 
 		self.initPygame()
@@ -37,6 +39,8 @@ class Main:
 		self.quoteManager = QuoteManager(QUOTES_FILE_PATH)
 		self.quoteManager.randomize()
 		self.quoteManager.generateLines()
+
+		self.player = Player(self.quoteManager)
 	
 	def initPygame(self):
 		'''
@@ -98,6 +102,7 @@ class Main:
 		'''
 
 		self.quoteManager.tick()
+		self.player.tick()
 
 	def draw(self, dt):
 		'''
@@ -105,11 +110,12 @@ class Main:
 		Called with no specific time interval.
 		'''
 
-		self.screen.fill(BLACK)
+		self.screen.fill(WHITE)
 		self.render(dt)
 		pygame.display.flip()
 	
 	def render(self, dt):
+		self.player.render(self.screen, dt)
 		self.quoteManager.render(self.screen, dt)
 
 # Start main program
