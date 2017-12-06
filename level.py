@@ -2,6 +2,7 @@ import pygame
 
 from constants import *
 from player import Player
+from spritesheet import SpriteSheet
 
 class Level:
 
@@ -20,6 +21,8 @@ class Level:
 
 		self.gameOverFont = pygame.font.SysFont("Courier", 40)
 		self.gameOverText = None
+
+		self.background = SpriteSheet(BACKGROUND_SCROLL_PATH, 90, 60)
 
 	def reset(self):
 		self.offset = 0
@@ -67,4 +70,8 @@ class Level:
 		
 		offset = self.prevOffset + (self.offset - self.prevOffset) * dt
 		
+		bgw = self.background.tw
+		self.background.render(screen, w - ((offset + w) % (bgw * 2)), 0, 0, 0)
+		self.background.render(screen, w - ((offset + w - bgw) % (bgw * 2)), 0, 1, 0)
+
 		self.player.render(screen, dt, offset)

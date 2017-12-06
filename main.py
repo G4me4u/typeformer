@@ -65,7 +65,7 @@ class Main:
 		if (ev.type == pygame.QUIT):
 			self.running = False
 		elif (ev.type == pygame.KEYDOWN):
-			if (self.level.gameOver and ev.key == pygame.K_SPACE):
+			if (self.level.gameOver and ev.key == pygame.K_RETURN):
 				self.level.reset()
 
 			self.quoteManager.keyTyped(ev.unicode)

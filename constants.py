@@ -29,4 +29,6 @@ PLAYER_SPEED = 4.0
 
 PLAYER_IDLE_PATH = "res/assets/player_idle.png"
 PLAYER_WALK_PATH = "res/assets/player_walking.png"
-PLAYER_RUN_PATH = "res/assets/player_running.png"
+PLAYER_RUN_PATH  = "res/assets/player_running.png"
+
+BACKGROUND_SCROLL_PATH = "res/assets/bg.png"
