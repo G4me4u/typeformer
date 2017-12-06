@@ -53,7 +53,7 @@ class Main:
 		pygame.display.set_caption(TITLE)
 
 		os.environ['SDL_VIDEO_CENTERED'] = '1'
-		
+
 		size = width, height = SCREEN_WIDTH, SCREEN_HEIGHT
 		self.screen = pygame.display.set_mode(size)
 
@@ -65,6 +65,9 @@ class Main:
 		if (ev.type == pygame.QUIT):
 			self.running = False
 		elif (ev.type == pygame.KEYDOWN):
+			if (self.level.gameOver and ev.key == pygame.K_SPACE):
+				self.level.reset()
+
 			self.quoteManager.keyTyped(ev.unicode)
 
 	def runLoop(self):
