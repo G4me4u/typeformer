@@ -18,8 +18,14 @@ class Player:
 		self.width  = self.idleAnim.sheet.tw
 		self.height = self.idleAnim.sheet.th
 
+		self.prevPos = 0
+		self.pos = 0
+
 	def tick(self):
 		speed = self.quoteManager.symbolsPerSecond / 3.0
+
+		self.prevPos = self.pos
+		self.pos += max(0.0, speed - 1.0) * PLAYER_SPEED
 
 		self.currentAnim = min(2, int(speed))
 
@@ -31,11 +37,13 @@ class Player:
 		self.walkAnim.tick()
 		self.runAnim.tick()
 
-	def render(self, screen, dt):
+	def render(self, screen, dt, offset):
 		w = screen.get_width()
 		h = screen.get_height()
 
-		self.anims[self.currentAnim].render(screen, (w - self.width) // 2, h - self.height - FLOOR_HEIGHT)
-		
+		pos = self.prevPos + (self.pos - self.prevPos) * dt
+		xp = (w - self.width) // 2 + pos - offset
+		yp = h - self.height - FLOOR_HEIGHT
 
+		self.anims[self.currentAnim].render(screen, xp, yp)
 	

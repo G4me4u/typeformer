@@ -134,7 +134,7 @@ class QuoteManager:
 		if (len(origin) > MAX_ORIGIN_LENGTH):
 			origin = (origin[:MAX_ORIGIN_LENGTH - 3]) + "..."
 
-		self.originText = self.originFont.render(origin, False, BLACK)
+		self.originText = self.originFont.render(origin, False, WHITE)
 
 	def keyTyped(self, key):
 		'''
@@ -155,7 +155,7 @@ class QuoteManager:
 			self.colOffset += 1
 			currentlyTyped = topLine.lineText[:self.colOffset]
 			
-			self.currentText = self.originFont.render(currentlyTyped, False, BLACK)
+			self.currentText = self.originFont.render(currentlyTyped, False, WHITE)
 			self.lineTypedText = self.textFont.render(currentlyTyped.replace(" ", "_"), False, RED)
 			self.lineMissingText = self.textFont.render(topLine.lineText[self.colOffset:], False, WHITE)
 

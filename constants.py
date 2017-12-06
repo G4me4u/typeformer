@@ -19,6 +19,8 @@ AVG_SPEED_SAMPLE_TIME = 5.0
 FLOOR_HEIGHT = 50
 SPRITE_SCALE = 8
 
+PLAYER_SPEED = 4.0
+
 PLAYER_IDLE_PATH = "res/assets/player_idle.png"
 PLAYER_WALK_PATH = "res/assets/player_walking.png"
 PLAYER_RUN_PATH = "res/assets/player_running.png"

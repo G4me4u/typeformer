@@ -4,7 +4,7 @@ from constants import *
 
 from timer import Timer
 from quotemanager import QuoteManager
-from player import Player
+from level import Level
 
 class Main:
 
@@ -13,7 +13,7 @@ class Main:
 		self.screen = None
 
 		self.quoteManager = None
-		self.player = None
+		self.level = None
 
 		self.running = False
 
@@ -40,7 +40,7 @@ class Main:
 		self.quoteManager.randomize()
 		self.quoteManager.generateLines()
 
-		self.player = Player(self.quoteManager)
+		self.level = Level(self.quoteManager)
 	
 	def initPygame(self):
 		'''
@@ -102,7 +102,7 @@ class Main:
 		'''
 
 		self.quoteManager.tick()
-		self.player.tick()
+		self.level.tick()
 
 	def draw(self, dt):
 		'''
@@ -110,13 +110,10 @@ class Main:
 		Called with no specific time interval.
 		'''
 
-		self.screen.fill(WHITE)
-		self.render(dt)
-		pygame.display.flip()
-	
-	def render(self, dt):
-		self.player.render(self.screen, dt)
+		self.level.render(self.screen, dt)
 		self.quoteManager.render(self.screen, dt)
+		
+		pygame.display.flip()
 
 # Start main program
 Main().start()
