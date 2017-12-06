@@ -1,3 +1,4 @@
+import os
 import pygame
 
 from constants import *
@@ -51,7 +52,9 @@ class Main:
 
 		pygame.display.set_caption(TITLE)
 
-		size = width, height = 720, 540
+		os.environ['SDL_VIDEO_CENTERED'] = '1'
+		
+		size = width, height = SCREEN_WIDTH, SCREEN_HEIGHT
 		self.screen = pygame.display.set_mode(size)
 
 	def handleEvent(self, ev):
@@ -112,7 +115,7 @@ class Main:
 
 		self.level.render(self.screen, dt)
 		self.quoteManager.render(self.screen, dt)
-		
+
 		pygame.display.flip()
 
 # Start main program

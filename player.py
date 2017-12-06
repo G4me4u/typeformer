@@ -21,6 +21,11 @@ class Player:
 		self.prevPos = 0
 		self.pos = 0
 
+	def reset(self):
+		self.pos = 0
+		self.prevPos = 0
+		self.currentAnim = 0
+
 	def tick(self):
 		speed = self.quoteManager.symbolsPerSecond / 3.0
 
