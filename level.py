@@ -24,10 +24,13 @@ class Level:
 
 		self.background = SpriteSheet(BACKGROUND_SCROLL_PATH, 90, 60)
 
+		self.score = 0
+
 	def reset(self):
 		self.offset = 0
 		self.prevOffset = 0
 		self.worldTime = 0
+		self.score = 0
 		self.gameOver = False
 
 		self.player.reset()
@@ -50,6 +53,9 @@ class Level:
 		if (self.looseTimer <= 0.0):
 			self.gameOver = True
 			self.gameOverText = self.gameOverFont.render("Game Over", False, WHITE)
+			self.scoreText = self.quoteManager.uiFont.render("Score: " + str(int(self.score)), False, WHITE)
+
+		self.score += self.quoteManager.symbolsPerSecond / TPS
 
 	def render(self, screen, dt):
 		w = screen.get_width()
@@ -59,14 +65,19 @@ class Level:
 			screen.fill(BLACK)
 
 			xp = (w - self.gameOverText.get_width()) // 2
-			yp = (h - self.gameOverText.get_height()) // 2
+			yp = (h - self.gameOverText.get_height() - self.scoreText.get_width()) // 2
 			screen.blit(self.gameOverText, (xp, yp))
+
+			xp = (w - self.scoreText.get_width()) // 2
+			yp += self.gameOverText.get_height()
+			screen.blit(self.scoreText, (xp, yp))
 			return
 
 		c = 255 * self.looseTimer
 		screen.fill((c, c, c))
 
-		pygame.draw.rect(screen, BLACK, (0, h - FLOOR_HEIGHT, w, FLOOR_HEIGHT))
+		c = min(128, 255 - c)
+		pygame.draw.rect(screen, (c, c, c), (0, h - FLOOR_HEIGHT, w, FLOOR_HEIGHT))
 		
 		offset = self.prevOffset + (self.offset - self.prevOffset) * dt
 		

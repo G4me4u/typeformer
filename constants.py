@@ -5,6 +5,7 @@ SCREEN_HEIGHT = 540
 
 PI = 3.14159265359
 E  = 2.71828182846
+EPSILON = 0.001
 
 TPS = 20.0
 FPS = 60.0 # has to be a multiple of TPS

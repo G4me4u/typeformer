@@ -25,7 +25,7 @@ class QuoteManager:
 
 		# Fonts used for drawing
 		self.textFont = pygame.font.SysFont("Courier", 18)
-		self.originFont = pygame.font.SysFont("Courier", 14)
+		self.uiFont = pygame.font.SysFont("Courier", 14)
 
 		tmpChar = self.textFont.render(" ", False, BLACK)
 		self.charSize = ( tmpChar.get_width(), tmpChar.get_height() )
@@ -39,6 +39,7 @@ class QuoteManager:
 		self.currentText = None
 		self.lineTypedText = None
 		self.lineMissingText = None
+		self.symbolsPerSecondText = None
 
 		self.numLines = 0
 		self.originText = None
@@ -120,6 +121,7 @@ class QuoteManager:
 		self.currentText = None
 		self.lineTypedText = None
 		self.lineMissingText = None
+		self.symbolsPerSecondText = None
 
 		self.typedTimes = []
 		self.symbolsPerSecond = 0
@@ -134,7 +136,7 @@ class QuoteManager:
 		if (len(origin) > MAX_ORIGIN_LENGTH):
 			origin = (origin[:MAX_ORIGIN_LENGTH - 3]) + "..."
 
-		self.originText = self.originFont.render(origin, False, WHITE)
+		self.originText = self.uiFont.render(origin, False, WHITE)
 
 	def keyTyped(self, key):
 		'''
@@ -155,7 +157,7 @@ class QuoteManager:
 			self.colOffset += 1
 			currentlyTyped = topLine.lineText[:self.colOffset]
 			
-			self.currentText = self.originFont.render(currentlyTyped, False, WHITE)
+			self.currentText = self.uiFont.render(currentlyTyped, False, WHITE)
 			self.lineTypedText = self.textFont.render(currentlyTyped.replace(" ", "_"), False, RED)
 			self.lineMissingText = self.textFont.render(topLine.lineText[self.colOffset:], False, WHITE)
 
@@ -194,6 +196,7 @@ class QuoteManager:
 			self.typedTimes.pop(0)
 		
 		self.symbolsPerSecond = len(self.typedTimes) / AVG_SPEED_SAMPLE_TIME
+		self.symbolsPerSecondText = self.uiFont.render(str(self.symbolsPerSecond) + " symbols / s", False, WHITE)
 
 	def renderLine(self, screen, line, x, y, alpha=1.0):
 		'''
@@ -222,8 +225,8 @@ class QuoteManager:
 		tmpSurface.fill(BLACK)
 		screen.blit(tmpSurface, (ax - 5, y - 5))
 
-		symbolsPerSecondText = self.originFont.render(str(self.symbolsPerSecond) + " symbols / s", False, BLACK)
-		screen.blit(symbolsPerSecondText, ((w - symbolsPerSecondText.get_width()) // 2, y + ah + 5))
+		if (self.symbolsPerSecondText):
+			screen.blit(self.symbolsPerSecondText, ((w - self.symbolsPerSecondText.get_width()) // 2, h - self.charSize[1] * 2 - 10))
 
 		alpha = 1.0
 		for i in range(min(MAX_WRITING_ROWS, self.numLines - self.rowOffset)):
