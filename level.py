@@ -50,7 +50,7 @@ class Level:
 		distRatio = max(min(1.0, 2.0 + distAhead / SCREEN_WIDTH * 4.0), 0.0)
 		self.looseTimer = (E ** distRatio - 1.0) / (E - 1.0)
 
-		if (self.looseTimer <= 0.0):
+		if (self.looseTimer <= EPSILON):
 			self.gameOver = True
 			self.gameOverText = self.gameOverFont.render("Game Over", False, WHITE)
 			self.scoreText = self.quoteManager.uiFont.render("Score: " + str(int(self.score)), False, WHITE)
