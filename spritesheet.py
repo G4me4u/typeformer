@@ -14,6 +14,11 @@ class SpriteSheet:
 		self.load()
 
 	def load(self):
+		'''
+		Loads sprite texture from a file and scales it
+		by SPRITE_SCALE
+		'''
+
 		sheet = pygame.image.load(self.filepath)
 		sheet.convert_alpha()
 
@@ -24,6 +29,11 @@ class SpriteSheet:
 		self.sheet = pygame.transform.scale(sheet, self.size)
 
 	def render(self, screen, x, y, xt, yt):
+		'''
+		Draws a tile at the specified tile-location xt, yt
+		at the specified screen-location x, y
+		'''
+		
 		x0 = xt * self.tw
 		y0 = yt * self.th
 

@@ -14,6 +14,11 @@ class Animation:
 		self.loop = True
 
 	def tick(self):
+		'''
+		Updates the current animation frame
+		depending on the time passed.
+		'''
+
 		now = time()
 		self.animProgress += (now - self.last) / self.timePerFrame
 		self.last = now
@@ -25,4 +30,8 @@ class Animation:
 				self.col = 0
 
 	def render(self, screen, x, y):
+		'''
+		Draws the current animation frame
+		'''
+		
 		self.sheet.render(screen, x, y, self.col, 0)

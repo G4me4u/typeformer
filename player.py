@@ -22,11 +22,19 @@ class Player:
 		self.pos = 0
 
 	def reset(self):
+		'''
+		Resets the player stats
+		'''
+		
 		self.pos = 0
 		self.prevPos = 0
 		self.currentAnim = 0
 
 	def tick(self):
+		'''
+		Ticks the player. Handles movement and animations
+		'''
+
 		speed = self.quoteManager.symbolsPerSecond / 3.0
 
 		self.prevPos = self.pos
@@ -43,6 +51,11 @@ class Player:
 		self.runAnim.tick()
 
 	def render(self, screen, dt, offset):
+		'''
+		Draws the current animation at 
+		the correct position.
+		'''
+
 		w = screen.get_width()
 		h = screen.get_height()
 

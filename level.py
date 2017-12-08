@@ -27,6 +27,10 @@ class Level:
 		self.score = 0
 
 	def reset(self):
+		'''
+		Resets the level stats
+		'''
+
 		self.offset = 0
 		self.prevOffset = 0
 		self.worldTime = 0
@@ -36,6 +40,11 @@ class Level:
 		self.player.reset()
 
 	def tick(self):
+		'''
+		Ticks the level - the player and 
+		handles lose-condition
+		'''
+
 		if (self.gameOver):
 			return
 
@@ -58,6 +67,10 @@ class Level:
 		self.score += self.quoteManager.symbolsPerSecond / TPS
 
 	def render(self, screen, dt):
+		'''
+		Draws the level
+		'''
+
 		w = screen.get_width()
 		h = screen.get_height()
 
