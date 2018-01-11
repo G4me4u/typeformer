@@ -11,7 +11,6 @@ class Animation:
 		self.animProgress = 0.0
 
 		self.col = 0
-		self.loop = True
 
 	def tick(self):
 		'''
